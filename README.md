@@ -1,4 +1,4 @@
-# era5_tools
+## era5_tools
 
 This is a small Python package for automating and simplifying the downloading of ERA5 data using CDSAPI.
 The functions currently in the package will download data in monthly blocks, saving to file.
@@ -7,7 +7,7 @@ automatically applied to each file once downloaded.
 
 An example script of how to use `download_multiple_months()` is in the `/scripts` directory.
 
-## Installation
+### Installation
 
 1. Clone this repository.
 2. Create a new Python environment using conda. Install pip into this environment.
@@ -15,47 +15,39 @@ An example script of how to use `download_multiple_months()` is in the `/scripts
 4. `cd` into the top repository directory.
 5. Enter `pip install -e .`
 
+Make sure you have set up the use of CDSAPI on your machine.
+
 Once installed, import this into your script using `import era5_tools`.
 
-## Basic Overview
+### Basic Overview
 
-The most useful function is `era5_tools.download_multiple_months()`:
+The most useful function is `era5_tools.download_multiple_months()` (more info in function docstring). Examples:
+
+**Download data into monthly files over multiple years (2000 and 2001)**
 
 ```
-def download_multiple_months(era5_varname, dp_output,
-                             year_start, year_end, 
-                             month = None,
-                             apply_func = None,
-                             func_name = 'analysis',
-                             delete_after_func = False,
-                             era5_server = 'reanalysis-era5-single-levels'):
-    """
-    Download global ERA5 data for a multiple months and years on an hourly frequency.
-    Data is downloaded and saved into monthly files.
-    
-    There is an additional option of applying a functions to the resulting monthly data
-    using the apply_func argument. For example, if you want to resample from hourly
-    to daily data. Must take a single argument as input ( filename ) and output a 
-    single xarray dataset. When passed, this function will be applied and the r
-    esulting dataset will be saved to a new file with suffic func_name. 
+import era5_tools
+output_directory = './data'
+era5_tools.download_multiple_months('2m_temperature', output_directory, 2000, 2001)
+```
 
-    Args:
-        era5_varname (str)   : Variable name to download from ERA5.
-        dp_output (str)      : Output directory
-        year_start (int)     : Start year for download.
-        year_end (int)       : End year for download (same as start for one year)
-        month (int)          : Download month. Default all months.
-        apply_func (function): A function to apply to the data downloaded at
-                               each monthly iteration. Default None.
-        func_name (str)      : Modifier for output file. Dataset that is output by
-                               apply_func() will be saved to a file with this suffix.
-                               Default 'analysis'.
-        delete_after_func (bool) : If true, delete the hourly downloaded file after
-                                   apply_func is applied.
-        era5_server (str)    : Name of era5 download server
+**Download data into monthly files for just January and February**
+```
+era5_tools.download_multiple_months('2m_temperature', output_directory, 2000, 2001, month=[1,2])
+```
 
-    Returns:
-        Saves downloaded file to dp_output. Filename is automatic.
-        Returns new filename.
-    """
-    ```
+**Download data for a single year (all months) and apply a simple resampling function:**
+```
+def resample_func( fp ):
+
+  # Open dataset and resample to daily means
+  ds = xr.open_dataset(fp).resample(time='1D').mean(dim='time')
+  
+  return ds
+  
+era5_tools.download_multiple_months('2m_temperature', output_directory, 2000, 2001, month=[1,2],
+                                    apply_func = resample_func, func_name = '1Dmean', delete_after_func = True)
+```
+
+This function will resample each downloaded monthly file to daily means. The original downloaded hourly file will be deleted.
+
