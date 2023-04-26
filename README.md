@@ -45,8 +45,10 @@ def resample_func( fp ):
   
   return ds
   
-era5_tools.download_multiple_months('2m_temperature', output_directory, 2000, 2001, month=[1,2],
-                                    apply_func = resample_func, func_name = '1Dmean', delete_after_func = True)
+era5_tools.download_multiple_months('2m_temperature', output_directory, 
+                                     2000, 2001, month=[1,2],
+                                     apply_func = resample_func, func_name = '1Dmean', 
+                                     delete_after_func = True)
 ```
 
 This function will resample each downloaded monthly file to daily means. The original downloaded hourly file will be deleted.
