@@ -1,4 +1,4 @@
-## era5_tools
+## Basic tools for downloading ERA5 data
 
 This is a small Python package for automating and simplifying the downloading of ERA5 data using CDSAPI.
 The functions currently in the package will download data in monthly blocks, saving to file.
