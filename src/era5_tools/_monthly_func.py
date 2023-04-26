@@ -2,6 +2,7 @@ import cdsapi
 import os
 import subprocess
 import numpy as np
+from . import _utils
 
 def download_month(era5_varname, dp_output,
                    year, month, lon_bnds = None, lat_bnds = None,
@@ -12,7 +13,6 @@ def download_month(era5_varname, dp_output,
 
     Args:
         era5_varname (str)   : Variable name to download from ERA5.
-        output_varname (str) : Variable name to use in filename
         dp_output (str)      : Output directory
         year (int)           : Download year
         month (int)          : Download month
@@ -36,36 +36,7 @@ def download_month(era5_varname, dp_output,
         print("Downloading y{year}m{month:02d}".format(year=year, month=month))
         print(f'Output filename: {fp_out}')
         
-    param_dict = {
-            'product_type': 'reanalysis',
-            'variable': era5_varname,
-            'year': str(year),
-            'month': "{month:02d}".format(month=month),
-            'day': [
-                    '01', '02', '03',
-                    '04', '05', '06',
-                    '07', '08', '09',
-                    '10', '11', '12',
-                    '13', '14', '15',
-                    '16', '17', '18',
-                    '19', '20', '21',
-                    '22', '23', '24',
-                    '25', '26', '27',
-                    '28', '29', '30',
-                    '31',
-                ],
-            'time': [
-                '00:00', '01:00', '02:00',
-                '03:00', '04:00', '05:00',
-                '06:00', '07:00', '08:00',
-                '09:00', '10:00', '11:00',
-                '12:00', '13:00', '14:00',
-                '15:00', '16:00', '17:00',
-                '18:00', '19:00', '20:00',
-                '21:00', '22:00', '23:00',
-            ],
-            'format': 'netcdf',
-        }
+    param_dict = _utils.make_cds_dict(era5_varname, year, month)
     
     if lat_bnds is not None and lon_bnds is not None:
         raise NotImplemented()
