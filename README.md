@@ -15,7 +15,7 @@ An example script of how to use `download_multiple_months()` is in the `/scripts
 4. `cd` into the top repository directory.
 5. Enter `pip install -e .`
 
-Make sure you have set up the use of CDSAPI on your machine.
+Make sure you have set up the use of CDSAPI on your machine, as described here: https://cds.climate.copernicus.eu/api-how-to.
 
 Once installed, import this into your script using `import era5_tools`.
 
@@ -52,5 +52,5 @@ era5_tools.download_multiple_months('2m_temperature', output_directory,
 ```
 
 This function will resample each downloaded monthly file to daily means. The original downloaded hourly file will be deleted.
-Final files will have the suffic '1Dmean'.
+Final files will have the suffix '1Dmean'.
 
