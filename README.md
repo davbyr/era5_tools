@@ -52,5 +52,5 @@ era5_tools.download_multiple_months('2m_temperature', output_directory,
 ```
 
 This function will resample each downloaded monthly file to daily means. The original downloaded hourly file will be deleted.
-Final files will have the suffic '1Dmean'.
+Final files will have the suffix '1Dmean'.
 
