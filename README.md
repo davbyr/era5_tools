@@ -25,19 +25,19 @@ The most useful function is `era5_tools.download_multiple_months()` (more info i
 
 **Download data into monthly files over multiple years (2000 and 2001)**
 
-```
+```python
 import era5_tools
 output_directory = './data'
 era5_tools.download_multiple_months('2m_temperature', output_directory, 2000, 2001)
 ```
 
 **Download data into monthly files for just January and February**
-```
+```python
 era5_tools.download_multiple_months('2m_temperature', output_directory, 2000, 2001, month=[1,2])
 ```
 
 **Download data for a single year (all months) and apply a simple resampling function:**
-```
+```python
 def resample_func( fp ):
 
   # Open dataset and resample to daily means
